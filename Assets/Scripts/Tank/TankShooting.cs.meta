@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: 06b38fa3f5188f6419ab17bc1669c18c
-timeCreated: 1431010538
-licenseType: Store
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_Shell: {fileID: 8374872156938268916, guid: 345bb683e6dd67b43bf942240d768d62,
+      type: 3}
+  - m_FireTransform: {instanceID: 0}
+  - m_AimSlider: {instanceID: 0}
+  - m_ShootingAudio: {instanceID: 0}
+  - m_ChargingClip: {instanceID: 0}
+  - m_FireClip: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

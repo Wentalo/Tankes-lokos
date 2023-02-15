@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class TankMovement : MonoBehaviour
 {
@@ -16,7 +17,18 @@ public class TankMovement : MonoBehaviour
     private Rigidbody m_Rigidbody;         
     private float m_MovementInputValue;    
     private float m_TurnInputValue;        
-    private float m_OriginalPitch;         
+    private float m_OriginalPitch;
+
+
+    //Cambiado
+
+    public NavMeshAgent m_navMeshAgent;
+    public GameObject[] m_TanksGO;
+    public Transform m_wpPlayer1;
+    public Transform m_wpPlayer2;
+    //public TankShooting m_shoot;
+    //public int m_CurrentWaypointIndex;
+
 
 
     private void Awake()
@@ -41,8 +53,16 @@ public class TankMovement : MonoBehaviour
 
     private void Start()
     {
-        m_MovementAxisName = "Vertical" + m_PlayerNumber;
-        m_TurnAxisName = "Horizontal" + m_PlayerNumber;
+        m_TanksGO = GameObject.FindGameObjectsWithTag("Tank");
+        m_wpPlayer1 = m_TanksGO[0].transform;
+        m_wpPlayer2 = m_TanksGO[1].transform;
+
+        if (m_PlayerNumber <= 2)
+        {
+            m_MovementAxisName = "Vertical" + m_PlayerNumber;
+            m_TurnAxisName = "Horizontal" + m_PlayerNumber;
+        }
+        
 
         m_OriginalPitch = m_MovementAudio.pitch; //propiedad del pitch
     }
@@ -50,10 +70,30 @@ public class TankMovement : MonoBehaviour
 
     private void Update()
     {
-        // Store the player's input and make sure the audio for the engine is playing.
-        m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-        m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
 
+        if (m_PlayerNumber <= 2)
+        {
+            // Store the value of both input axes.
+            m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+            m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
+        }
+        else
+        {
+            float d0 = (m_TanksGO[m_PlayerNumber - 1].transform.position - m_TanksGO[0].transform.position).sqrMagnitude;
+            float d1 = (m_TanksGO[m_PlayerNumber - 1].transform.position - m_TanksGO[1].transform.position).sqrMagnitude;
+
+            if (d0 < d1)
+            {
+                m_navMeshAgent.SetDestination(m_TanksGO[0].transform.position);
+                //m_shoot.Fire();
+
+            }
+            else
+            {
+                m_navMeshAgent.SetDestination(m_TanksGO[1].transform.position);
+                //m_shoot.Fire();
+            }
+        }
         EngineAudio();
     }
 
